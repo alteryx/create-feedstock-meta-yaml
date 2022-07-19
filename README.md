@@ -21,6 +21,13 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      project:
+        description: 'release version to kickoff action'
+        required: true
+      pypi_version:
+        description: 'release version to kickoff action'
+        required: true
 jobs:
   integration_test:
     name: Integration Test
@@ -35,9 +42,10 @@ jobs:
         uses: ./
         with:
           project: "featuretools"
-          pypi_version: ${{ github.event.release.tag_name }}
+          pypi_version: ${{ github.event.release.tag_name || github.event.inputs.pypi_version }}
           setup_cfg_filepath: "setup.cfg"
           meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
+          add_to_run_requirements: ""
           add_to_test_requirements: "python-graphviz >=0.8.4"
       - name: Print output
         run: cat example_meta.yaml

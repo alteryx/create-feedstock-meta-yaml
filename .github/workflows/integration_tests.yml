@@ -6,6 +6,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      pypi_version:
+        description: 'released PyPI version'
+        required: true
 jobs:
   integration_test:
     name: Integration Test
@@ -14,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.event.release.tag_name || }}
       - name: Create Feedstock meta
         id: create-feedstock-meta
         uses: ./
@@ -28,8 +32,11 @@ jobs:
         run: cat create_feedstock_meta_yaml/test_meta.yaml
       - name: Verify output
         run: |
-          if cmp --silent -- "$create_feedstock_meta_yaml/test_meta.yaml" "$create_feedstock_meta_yaml/expected_meta.yaml"; then
+          file1="/create_feedstock_meta_yaml/test_meta.yaml"
+          file2="/create_feedstock_meta_yaml/expected.yaml"
+          if cmp --silent -- "$file1" "$file2"; then
             echo "expected meta YAML matches output meta YAML"
+            exit 0
           else
             echo "ERROR: files are different"
             exit 1
