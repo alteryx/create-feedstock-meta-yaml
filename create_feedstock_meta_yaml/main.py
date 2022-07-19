@@ -50,7 +50,7 @@ def main():
         args.pypi_version,
         args.setup_cfg_filepath,
         args.meta_yaml_filepath,
-        args.run_requs_to_add,
+        args.run_reqs_to_add,
         args.test_reqs_to_add,
     )
     with open(meta_yaml_filepath, "w") as fp:

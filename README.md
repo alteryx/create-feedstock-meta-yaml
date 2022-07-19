@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/unit_tests.yml" target="_blank">
-        <img src="https://github.com/alteryx/mcreate-feedstock-meta-yaml/actions/workflows/unit_tests.yml/badge.svg" alt="Unit Tests" />
+        <img src="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/unit_tests.yml/badge.svg" alt="Unit Tests" />
     </a>
     <a href="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yml" target="_blank">
         <img src="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yml/badge.svg" alt="Integration Test" />
@@ -16,40 +16,34 @@ A GitHub Action to generate minimum Python dependencies.
 
 This GitHub Action provides a task to generate the minimum Python given 1 or more requirements.
 ```yaml
-name: Create Feedstock PR
+name: Integration Test
 on:
   pull_request:
     types: [opened, synchronize]
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
-  pull_latest_main:
-    name: Pull latest in forked feestock, and create feedstock PR
+  integration_test:
+    name: Integration Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.release.tag_name }}
-      - name: Pull latest from upstream for user forked feedstock
-        run: |
-          gh auth status
-          rm -rf featuretools-feedstock
-          gh repo fork conda-forge/featuretools-feedstock --clone
-          gh repo sync machineAYX/featuretools-feedstock --branch main --source conda-forge/featuretools-feedstock --branch main --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.AUTO_APPROVE_TOKEN }}
-      - uses: actions/checkout@v3
-        with:
-          repository: machineAYX/featuretools-feedstock
-          ref: main
-      - name: Run Minimum Dependency Generator
+      - name: Create Feedstock meta
         id: create-feedstock-meta
-        uses: alteryx/create-feedstock-meta-yaml@main
+        uses: ./
         with:
-          project: featuretools
-          pypi_version: ${{ github.event.release.tag_name }}
-          setup_cfg_filepath: setup.cfg
-          meta_yaml_filepath: featuretools-feedstock/recipe/meta.yaml
-          test_reqs_to_add: ["python-graphviz"]
+          project: "featuretools"
+          pypi_version: "v1.11.1"
+          setup_cfg_filepath: "setup.cfg"
+          meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
+          test_reqs_to_add: "python-graphviz >=0.8.4"
+      - name: Print output
+        run: cat example_meta.yaml
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
