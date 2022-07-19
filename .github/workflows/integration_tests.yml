@@ -30,10 +30,12 @@ jobs:
           add_to_test_requirements: "graphviz !=2.47.2"
       - name: Print output
         run: cat create_feedstock_meta_yaml/test_meta.yaml
+      - name: Print output
+        run: cat create_feedstock_meta_yaml/expected_meta.yaml
       - name: Verify output
         run: |
           file1="/create_feedstock_meta_yaml/test_meta.yaml"
-          file2="/create_feedstock_meta_yaml/expected.yaml"
+          file2="/create_feedstock_meta_yaml/expected_meta.yaml"
           if cmp --silent -- "$file1" "$file2"; then
             echo "expected meta YAML matches output meta YAML"
             exit 0
