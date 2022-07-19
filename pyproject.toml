@@ -1,0 +1,7 @@
+[tool.isort]
+profile = "black"
+skip = "__init__.py"
+multi_line_output = 3
+
+[tool.black]
+target-version = ['py310']

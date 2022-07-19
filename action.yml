@@ -1,0 +1,37 @@
+name: 'Create Feedstock Meta YAML'
+description: 'Create meta.yaml for a conda feedstock based on a PyPI version'
+inputs:
+  project:
+    required: true
+  pypi_version:
+    required: true
+  setup_cfg_filpeath:
+    required: true
+  meta_yaml_filepath:
+    required: true
+  run_reqs_to_add:
+    required: false
+  test_reqs_to_add:
+    required: false
+outputs:
+  meta_yaml:
+    description: 'The string of a new meta.yaml file (with the updated version, sha256, and requirements).'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - --project
+    - ${{ inputs.project }}
+    - --pypi_version
+    - ${{ inputs.pypi_version }}
+    - --setup_cfg_filpeath
+    - ${{ inputs.setup_cfg_filpeath }}
+    - --meta_yaml_filepath
+    - ${{ inputs.meta_yaml_filepath }}
+    - --run_reqs_to_add
+    - ${{ inputs.run_reqs_to_add }}
+    - --test_reqs_to_add
+    - ${{ inputs.test_reqs_to_add }}
+branding:
+  icon: 'align-center'
+  color: 'blue'

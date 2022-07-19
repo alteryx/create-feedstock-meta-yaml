@@ -1,0 +1,6 @@
+requests
+xonsh
+jinja2
+ruamel.yaml
+ruamel.yaml.jinja2
+packaging
