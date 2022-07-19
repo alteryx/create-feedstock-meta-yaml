@@ -1,16 +1,17 @@
-name: Create Feedstock PR
+name: Integration Test
 on:
   pull_request:
     types: [opened, synchronize]
   push:
     branches:
       - main
+  workflow_dispatch:
 jobs:
-  pull_latest_main:
-    name: Pull latest in forked feestock, and create feedstock PR
+  integration_test:
+    name: Integration Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.release.tag_name }}
