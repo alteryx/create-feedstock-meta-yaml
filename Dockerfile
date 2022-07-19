@@ -4,6 +4,4 @@ ADD requirements.txt requirements.txt
 
 RUN pip install pip --upgrade --progress-bar off
 RUN pip install -r requirements.txt --progress-bar off
-RUN python -c "import requests"
-RUN python -c "import conda_forge_tick"
 ENTRYPOINT ["python", "create_feedstock_meta_yaml/main.py"]
