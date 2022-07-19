@@ -18,11 +18,8 @@ This GitHub Action provides a task to generate the minimum Python given 1 or mor
 ```yaml
 name: Integration Test
 on:
-  pull_request:
-    types: [opened, synchronize]
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 jobs:
   integration_test:
@@ -38,7 +35,7 @@ jobs:
         uses: ./
         with:
           project: "featuretools"
-          pypi_version: "v1.11.1"
+          pypi_version: ${{ github.event.release.tag_name }}
           setup_cfg_filepath: "setup.cfg"
           meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
           test_reqs_to_add: "python-graphviz >=0.8.4"

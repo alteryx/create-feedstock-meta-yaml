@@ -47,8 +47,10 @@ def create_feedstock_meta_yaml(
     run_reqs_to_add = clean_list_length_one(run_reqs_to_add)
     test_reqs_to_add = clean_list_length_one(test_reqs_to_add)
 
-    requirements.extend(run_reqs_to_add)
-    test_requirements.extend(run_reqs_to_add)
+    if len(run_reqs_to_add) > 0:
+        requirements.extend(run_reqs_to_add)
+    if len(test_reqs_to_add) > 0:
+        test_requirements.extend(test_reqs_to_add)
 
     # add python to run requirements
     requirements.append(meta_requires_python)
