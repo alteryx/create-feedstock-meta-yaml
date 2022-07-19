@@ -25,4 +25,4 @@ jobs:
           meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta.yaml"
           add_to_test_requirements: "graphviz !=2.47.2"
       - name: Print output
-        run: create_feedstock_meta_yaml/test_meta.yaml
+        run: cat create_feedstock_meta_yaml/test_meta.yaml
