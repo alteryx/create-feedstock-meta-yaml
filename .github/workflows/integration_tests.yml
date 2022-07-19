@@ -1,0 +1,27 @@
+name: Create Feedstock PR
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+jobs:
+  pull_latest_main:
+    name: Pull latest in forked feestock, and create feedstock PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.release.tag_name }}
+      - name: Create Feedstock meta
+        id: create-feedstock-meta
+        uses: ./
+        with:
+          project: featuretools
+          pypi_version: "v1.11.1"
+          setup_cfg_filepath: example_setup.cfg
+          meta_yaml_filepath: example_meta.yaml
+          test_reqs_to_add: ["python-graphviz >=0.8.4"]
+      - name: Print output
+        run: cat example_meta.yaml

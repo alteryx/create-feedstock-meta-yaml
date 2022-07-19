@@ -16,11 +16,10 @@ A GitHub Action to generate minimum Python dependencies.
 
 This GitHub Action provides a task to generate the minimum Python given 1 or more requirements.
 ```yaml
+name: Create Feedstock PR
 on:
   pull_request:
     types: [opened, synchronize]
-
-name: Create Feedstock PR
 jobs:
   pull_latest_main:
     name: Pull latest in forked feestock, and create feedstock PR

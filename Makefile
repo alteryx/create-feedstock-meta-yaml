@@ -16,8 +16,13 @@ lint-fix:
 	black create_feedstock_meta_yaml -t py310
 	isort create_feedstock_meta_yaml/
 
+.PHONY: installdeps
 installdeps:
 	python -m pip install -r requirements.txt
 	rm -rf cf-scripts
 	git clone git@github.com:regro/cf-scripts.git
 	python -m pip install cf-scripts/.
+
+.PHONY: test
+test:
+	python create_feedstock_meta_yaml/test_create_feedstock_meta_yaml.py
