@@ -29,7 +29,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
             suffix=".cfg",
             prefix="setup",
         ) as setup_cfg_file:
-            setup_cfg_file.write(setup_cfg())
+            setup_cfg_file.write(generate_setup_cfg_str())
             setup_cfg_file.flush()
 
             setup_cfg_filepath = setup_cfg_file.name
@@ -61,11 +61,12 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
                 cmeta.meta["source"]["sha256"]
                 == "9c76e2ac4adcdf838f2a62beae131a627780dfe44641af59a8d146a30a4c666e"
             )
+            assert cmeta.meta["requirements"]["host"] == ["pip", "python >=3.7.*"]
             assert cmeta.meta["requirements"]["run"] == expected_run_reqs
             assert cmeta.meta["test"]["requires"] == expected_test_reqs
 
 
-def setup_cfg():
+def generate_setup_cfg_str():
     setup_cfg_str = f"""\
     [metadata]
     name = featuretools
@@ -74,7 +75,7 @@ def setup_cfg():
     install_requires =
         click >= 7.0.0
         dask[dataframe] >= 2021.10.0
-    python_requires = >=3.8, <4
+    python_requires = >=3.6, <4
 
     [options.extras_require]
     test =
