@@ -10,11 +10,10 @@
 </p>
 <hr>
 
-A GitHub Action to generate minimum Python dependencies.
+A GitHub Action to create a feedstock recipe/meta.yaml file (based on a PyPI version).
 
 ## Usage
 
-This GitHub Action provides a task to generate the minimum Python given 1 or more requirements.
 ```yaml
 name: Integration Test
 on:
