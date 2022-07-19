@@ -57,8 +57,8 @@ def create_feedstock_meta_yaml(
     requirements.append(meta_requires_python)
     requirements = sorted(requirements)
 
-    with open(meta_yaml_filepath) as f:
-        meta_yaml_as_string = f.read()
+    with open(meta_yaml_filepath) as fp:
+        meta_yaml_as_string = fp.read()
 
     cmeta = CondaMetaYAML(meta_yaml_as_string)
     cmeta.jinja2_vars["version"] = pypi_version_no_v
