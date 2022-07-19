@@ -71,9 +71,6 @@ def create_feedstock_meta_yaml(
 
     return cmeta
 
-    # with open(meta_yaml_filepath, "w") as fp:
-    #     cmeta.dump(fp)
-
 
 def extract_pypi_info(project, pypi_version_no_v):
     url = "https://pypi.python.org/pypi/{}/{}/json".format(project, pypi_version_no_v)

@@ -19,7 +19,6 @@ lint-fix:
 .PHONY: installdeps
 installdeps:
 	python -m pip install -r requirements.txt
-	python -m pip install https://github.com/regro/cf-scripts/archive/refs/heads/master.zip
 
 .PHONY: test
 test:

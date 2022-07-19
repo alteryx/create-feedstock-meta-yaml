@@ -53,7 +53,9 @@ def main():
         args.run_requs_to_add,
         args.test_reqs_to_add,
     )
-    # determine how to write meta.yaml from file
+    with open(meta_yaml_filepath, "w") as fp:
+        meta_yaml_as_str.dump(fp)
+    return
 
 
 if __name__ == "__main__":
