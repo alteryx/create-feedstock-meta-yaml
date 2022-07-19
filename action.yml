@@ -9,9 +9,9 @@ inputs:
     required: true
   meta_yaml_filepath:
     required: true
-  run_reqs_to_add:
+  add_to_run_requirements:
     required: false
-  test_reqs_to_add:
+  add_to_test_requirements:
     required: false
 outputs:
   meta_yaml:
@@ -28,10 +28,10 @@ runs:
     - ${{ inputs.setup_cfg_filepath }}
     - --meta_yaml_filepath
     - ${{ inputs.meta_yaml_filepath }}
-    - --run_reqs_to_add
-    - ${{ inputs.run_reqs_to_add }}
-    - --test_reqs_to_add
-    - ${{ inputs.test_reqs_to_add }}
+    - --add_to_run_requirements
+    - ${{ inputs.add_to_run_requirements }}
+    - --add_to_test_requirements
+    - ${{ inputs.add_to_test_requirements }}
 branding:
   icon: 'align-center'
   color: 'blue'

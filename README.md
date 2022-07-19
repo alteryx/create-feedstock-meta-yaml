@@ -38,7 +38,7 @@ jobs:
           pypi_version: ${{ github.event.release.tag_name }}
           setup_cfg_filepath: "setup.cfg"
           meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
-          test_reqs_to_add: "python-graphviz >=0.8.4"
+          add_to_test_requirements: "python-graphviz >=0.8.4"
       - name: Print output
         run: cat example_meta.yaml
       - name: Create Pull Request

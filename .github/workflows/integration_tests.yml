@@ -23,6 +23,6 @@ jobs:
           pypi_version: "v1.11.1"
           setup_cfg_filepath: "create_feedstock_meta_yaml/test_setup.cfg"
           meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta.yaml"
-          test_reqs_to_add: "graphviz !=2.47.2"
+          add_to_test_requirements: "graphviz !=2.47.2"
       - name: Print output
         run: cat example_meta.yaml
