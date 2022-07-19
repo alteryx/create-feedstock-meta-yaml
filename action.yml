@@ -13,9 +13,6 @@ inputs:
     required: false
   add_to_test_requirements:
     required: false
-outputs:
-  meta_yaml:
-    description: 'The string of a new meta.yaml file (with the updated version, sha256, and requirements).'
 runs:
   using: 'docker'
   image: 'Dockerfile'

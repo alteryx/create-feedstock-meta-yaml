@@ -55,14 +55,6 @@ def main():
     )
     with open(args.meta_yaml_filepath, "w") as fp:
         meta_yaml_as_str.dump(fp)
-    meta_yaml_as_str = sanitize_string(meta_yaml_as_str)
-
-    # DO NOT remove, the GH action needs to output
-    print("::set-output name=meta_yaml::{}".format(meta_yaml_as_str))
-
-
-def sanitize_string(s):
-    return s.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
 
 
 if __name__ == "__main__":
