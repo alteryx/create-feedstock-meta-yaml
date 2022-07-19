@@ -1,16 +1,20 @@
 {% set version = "1.11.1" %}
+
 package:
   name: featuretools
   version: {{ version }}
+
 source:
   url: https://pypi.io/packages/source/f/featuretools/featuretools-{{ version }}.tar.gz
   sha256: 9c76e2ac4adcdf838f2a62beae131a627780dfe44641af59a8d146a30a4c666e
+
 build:
   entry_points:
     - featuretools = featuretools.__main__:cli
   noarch: python
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps -vv
+
 requirements:
   host:
     - pip
@@ -52,6 +56,7 @@ test:
     - urllib3 >=1.26.5
   source_files:
     - featuretools/*
+
 about:
   doc_url: https://docs.featuretools.com
   dev_url: https://github.com/Featuretools/featuretools/
@@ -60,6 +65,7 @@ about:
   license_family: BSD
   license_file: LICENSE
   summary: a framework for automated feature engineering
+
 extra:
   recipe-maintainers:
     - gsheni
