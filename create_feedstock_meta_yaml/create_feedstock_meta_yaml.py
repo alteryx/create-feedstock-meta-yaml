@@ -17,8 +17,8 @@ def create_feedstock_meta_yaml(
     pypi_version,
     setup_cfg_filepath,
     meta_yaml_filepath,
-    run_reqs_to_add,
-    test_reqs_to_add,
+    add_to_run_requirements,
+    add_to_test_requirements,
 ):
 
     requirements = []
@@ -41,21 +41,23 @@ def create_feedstock_meta_yaml(
     config = configparser.ConfigParser()
     config.read(setup_cfg_filepath)
 
-    requirements = clean_cfg_section(config["options"]["install_requires"])
+    run_requirements = clean_cfg_section(config["options"]["install_requires"])
     test_requirements = clean_cfg_section(config["options.extras_require"]["test"])
 
-    run_reqs_to_add = clean_list_length_one(run_reqs_to_add)
-    test_reqs_to_add = clean_list_length_one(test_reqs_to_add)
+    add_to_run_requirements = clean_list_length_one(add_to_run_requirements)
+    add_to_test_requirements = clean_list_length_one(add_to_test_requirements)
 
-    if run_reqs_to_add and len(run_reqs_to_add) > 0:
-        requirements.extend(run_reqs_to_add)
-    if test_reqs_to_add and len(test_reqs_to_add) > 0:
-        test_requirements.extend(test_reqs_to_add)
-        test_requirements = sorted(test_requirements)
+    if add_to_run_requirements and len(add_to_run_requirements) > 0:
+        run_requirements.extend(add_to_run_requirements)
+
+    if add_to_test_requirements and len(add_to_test_requirements) > 0:
+        test_requirements.extend(add_to_test_requirements)
 
     # always add python to run requirements
-    requirements.append(meta_requires_python)
-    requirements = sorted(requirements)
+    run_requirements.append(meta_requires_python)
+
+    run_requirements.sort()
+    test_requirements.sort()
 
     with open(meta_yaml_filepath) as fp:
         meta_yaml_as_string = fp.read()
@@ -64,11 +66,9 @@ def create_feedstock_meta_yaml(
     cmeta.jinja2_vars["version"] = pypi_version_no_v
     cmeta.meta["source"]["sha256"] = pypi_sha256
     cmeta.meta["requirements"]["host"] = ["pip", meta_requires_python]
-    if len(requirements) > 0:
-        cmeta.meta["requirements"]["run"] = requirements
+    cmeta.meta["requirements"]["run"] = run_requirements
     if len(test_requirements) > 0:
         cmeta.meta["test"]["requires"] = test_requirements
-
     return cmeta
 
 
@@ -111,8 +111,9 @@ def clean_cfg_section(section):
 
 
 def clean_list_length_one(item):
+    new_list = None
     if isinstance(item, list) and len(item) == 1 and " " in item[0]:
-        item = item[0].split(" ")
-    if item == [""]:
-        return None
-    return item
+        new_list = item[0].split(",")
+    if item == [""] or item == []:
+        return new_list
+    return new_list

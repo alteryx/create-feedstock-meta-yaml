@@ -29,7 +29,7 @@ def main():
     )
 
     parser.add_argument(
-        "--run_reqs_to_add",
+        "--add_to_run_requirements",
         required=False,
         default=None,
         help="run requiremnts to add to the meta.yaml",
@@ -37,7 +37,7 @@ def main():
     )
 
     parser.add_argument(
-        "--test_reqs_to_add",
+        "--add_to_test_requirements",
         required=False,
         default=None,
         help="test requirements to add to the meta.yaml",
@@ -50,8 +50,8 @@ def main():
         args.pypi_version,
         args.setup_cfg_filepath,
         args.meta_yaml_filepath,
-        args.run_reqs_to_add,
-        args.test_reqs_to_add,
+        args.add_to_run_requirements,
+        args.add_to_test_requirements,
     )
     with open(args.meta_yaml_filepath, "w") as fp:
         meta_yaml_as_str.dump(fp)

@@ -21,8 +21,8 @@ jobs:
         with:
           project: "featuretools"
           pypi_version: "v1.11.1"
-          setup_cfg_filepath: "create_feedstock_meta_yaml/example_setup.cfg"
-          meta_yaml_filepath: "create_feedstock_meta_yaml/example_meta.yaml"
-          test_reqs_to_add: "python-graphviz >=0.8.4"
+          setup_cfg_filepath: "create_feedstock_meta_yaml/test_setup.cfg"
+          meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta.yaml"
+          test_reqs_to_add: "graphviz !=2.47.2"
       - name: Print output
         run: cat example_meta.yaml
