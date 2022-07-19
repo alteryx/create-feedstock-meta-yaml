@@ -26,3 +26,11 @@ jobs:
           add_to_test_requirements: "graphviz !=2.47.2"
       - name: Print output
         run: cat create_feedstock_meta_yaml/test_meta.yaml
+      - name: Verify output
+        run: |
+          if cmp --silent -- "$create_feedstock_meta_yaml/test_meta.yaml" "$create_feedstock_meta_yaml/expected_meta.yaml"; then
+            echo "expected meta YAML matches output meta YAML"
+          else
+            echo "ERROR: files are different"
+            exit 1
+          fi
