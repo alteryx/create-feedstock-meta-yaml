@@ -51,13 +51,11 @@ def create_feedstock_meta_yaml(
         requirements.extend(run_reqs_to_add)
     if len(test_reqs_to_add) > 0:
         test_requirements.extend(test_reqs_to_add)
+        test_requirements = sorted(test_requirements)
 
-    # add python to run requirements
+    # always add python to run requirements
     requirements.append(meta_requires_python)
     requirements = sorted(requirements)
-
-    requirements = sorted(requirements)
-    test_requirements = sorted(test_requirements)
 
     with open(meta_yaml_filepath) as f:
         meta_yaml_as_string = f.read()
