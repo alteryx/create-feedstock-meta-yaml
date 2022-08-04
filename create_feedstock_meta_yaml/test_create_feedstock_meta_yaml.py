@@ -72,6 +72,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
         assert cmeta.meta["requirements"]["host"] == ["pip", "python >=3.7.*"]
         assert cmeta.meta["requirements"]["run"] == expected_run_reqs
         assert cmeta.meta["test"]["requires"] == expected_test_reqs
+        assert cmeta.meta["build"]["number"] == 0
 
 
 if __name__ == "__main__":

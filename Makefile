@@ -8,6 +8,7 @@ clean:
 .PHONY: installdeps
 installdeps:
 	python -m pip install -r requirements.txt
+	pre-commit install
 
 .PHONY: test
 test:
