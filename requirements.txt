@@ -5,3 +5,4 @@ ruamel.yaml
 ruamel.yaml.jinja2
 packaging
 git+https://github.com/regro/cf-scripts.git@master
+pre-commit

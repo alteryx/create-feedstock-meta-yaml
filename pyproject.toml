@@ -1,0 +1,9 @@
+[tool.isort]
+profile = "black"
+forced_separate = "create_feedstock_meta_yaml"
+known_first_party = "create_feedstock_meta_yaml"
+skip = "__init__.py"
+multi_line_output = 3
+
+[tool.black]
+target-version = ['py310']

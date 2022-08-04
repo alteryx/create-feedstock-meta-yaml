@@ -19,6 +19,7 @@ def create_feedstock_meta_yaml(
     meta_yaml_filepath,
     add_to_run_requirements,
     add_to_test_requirements,
+    build_number=0,
 ):
 
     requirements = []
@@ -65,6 +66,7 @@ def create_feedstock_meta_yaml(
     cmeta = CondaMetaYAML(meta_yaml_as_string)
     cmeta.jinja2_vars["version"] = pypi_version_no_v
     cmeta.meta["source"]["sha256"] = pypi_sha256
+    cmeta.meta["build"]["number"] = build_number
     cmeta.meta["requirements"]["host"] = ["pip", meta_requires_python]
     cmeta.meta["requirements"]["run"] = run_requirements
     if len(test_requirements) > 0:
