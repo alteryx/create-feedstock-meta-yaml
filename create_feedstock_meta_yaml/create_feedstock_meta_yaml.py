@@ -19,7 +19,6 @@ def create_feedstock_meta_yaml(
     meta_yaml_filepath,
     add_to_run_requirements,
     add_to_test_requirements,
-    build_number=0,
 ):
 
     requirements = []
@@ -64,6 +63,11 @@ def create_feedstock_meta_yaml(
         meta_yaml_as_string = fp.read()
 
     cmeta = CondaMetaYAML(meta_yaml_as_string)
+
+    build_number = 0
+    if cmeta.jinja2_vars["version"] == pypi_version_no_v:
+        build_number = 1
+
     cmeta.jinja2_vars["version"] = pypi_version_no_v
     cmeta.meta["source"]["sha256"] = pypi_sha256
     cmeta.meta["build"]["number"] = build_number
