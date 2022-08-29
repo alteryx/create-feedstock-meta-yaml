@@ -41,7 +41,7 @@ def create_feedstock_meta_yaml(
 
     if project_metadata_filepath.endswith(
         ".cfg",
-    ) and project_metadata_filepath.startswith("setup"):
+    ):
         config = configparser.ConfigParser()
         config.read(project_metadata_filepath)
 
@@ -50,7 +50,7 @@ def create_feedstock_meta_yaml(
 
     elif project_metadata_filepath.endswith(
         ".toml",
-    ) and project_metadata_filepath.startswith("pyproject"):
+    ):
         config = None
         with open(project_metadata_filepath, "rb") as f:
             config = tomli.load(f)
