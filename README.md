@@ -4,8 +4,8 @@
     <a href="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/unit_tests.yml" target="_blank">
         <img src="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/unit_tests.yml/badge.svg" alt="Unit Tests" />
     </a>
-    <a href="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yml" target="_blank">
-        <img src="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yml/badge.svg" alt="Integration Test" />
+    <a href="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yaml" target="_blank">
+        <img src="https://github.com/alteryx/create-feedstock-meta-yaml/actions/workflows/integration_tests.yaml/badge.svg" alt="Integration Tests" />
     </a>
 </p>
 <hr>
