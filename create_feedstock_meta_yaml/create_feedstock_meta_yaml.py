@@ -1,6 +1,7 @@
 import configparser
 
 import requests
+import tomli
 from conda_forge_tick.recipe_parser import CondaMetaYAML
 from packaging.requirements import Requirement
 
@@ -15,7 +16,7 @@ pypi_to_conda = {
 def create_feedstock_meta_yaml(
     project,
     pypi_version,
-    setup_cfg_filepath,
+    project_metadata_filepath,
     meta_yaml_filepath,
     add_to_run_requirements,
     add_to_test_requirements,
@@ -38,11 +39,29 @@ def create_feedstock_meta_yaml(
 
     meta_requires_python, pypi_sha256 = extract_pypi_info(project, pypi_version_no_v)
 
-    config = configparser.ConfigParser()
-    config.read(setup_cfg_filepath)
+    if project_metadata_filepath.endswith(
+        ".cfg",
+    ) and project_metadata_filepath.startswith("setup"):
+        config = configparser.ConfigParser()
+        config.read(setup_cfg_filepath)
 
-    run_requirements = clean_cfg_section(config["options"]["install_requires"])
-    test_requirements = clean_cfg_section(config["options.extras_require"]["test"])
+        run_requirements = clean_cfg_section(config["options"]["install_requires"])
+        test_requirements = clean_cfg_section(config["options.extras_require"]["test"])
+
+    elif project_metadata_filepath.endswith(
+        ".toml",
+    ) and project_metadata_filepath.startswith("pyproject"):
+        config = None
+        with open(project_metadata_filepath, "rb") as f:
+            config = tomli.load(f)
+
+        run_requirements = toml_dict["project"]["dependencies"]
+        test_requirements = toml_dict["project.optional-dependencies"]["test"]
+
+    else:
+        raise ValueError(
+            "Unsupported project metadata file type.",
+        )
 
     add_to_run_requirements = clean_list_length_one(add_to_run_requirements)
     add_to_test_requirements = clean_list_length_one(add_to_test_requirements)

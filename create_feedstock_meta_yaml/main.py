@@ -17,9 +17,9 @@ def main():
     )
 
     parser.add_argument(
-        "--setup_cfg_filepath",
+        "--project_metadata_filepath",
         required=True,
-        help="filepath of the setup.cfg (which contain core and test requirements)",
+        help="filepath of the setup.cfg or pyproject.toml (which contain core and test requirements)",
     )
 
     parser.add_argument(
@@ -48,7 +48,7 @@ def main():
     meta_yaml_as_str = create_feedstock_meta_yaml(
         args.project,
         args.pypi_version,
-        args.setup_cfg_filepath,
+        args.project_metadata_filepath,
         args.meta_yaml_filepath,
         args.add_to_run_requirements,
         args.add_to_test_requirements,
