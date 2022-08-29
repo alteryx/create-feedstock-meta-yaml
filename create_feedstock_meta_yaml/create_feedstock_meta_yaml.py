@@ -51,9 +51,9 @@ def create_feedstock_meta_yaml(
     elif project_metadata_filepath.endswith(
         ".toml",
     ):
-        config = None
+        toml_dict = None
         with open(project_metadata_filepath, "rb") as f:
-            config = tomli.load(f)
+            toml_dict = tomli.load(f)
 
         run_requirements = toml_dict["project"]["dependencies"]
         test_requirements = toml_dict["project.optional-dependencies"]["test"]
