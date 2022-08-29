@@ -43,7 +43,7 @@ def create_feedstock_meta_yaml(
         ".cfg",
     ) and project_metadata_filepath.startswith("setup"):
         config = configparser.ConfigParser()
-        config.read(setup_cfg_filepath)
+        config.read(project_metadata_filepath)
 
         run_requirements = clean_cfg_section(config["options"]["install_requires"])
         test_requirements = clean_cfg_section(config["options.extras_require"]["test"])

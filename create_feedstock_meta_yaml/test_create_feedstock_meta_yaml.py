@@ -19,7 +19,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
         pypi_version = "1.11.1"
         dir_path = os.path.dirname(os.path.realpath(__file__))
         meta_yaml_filepath = os.path.join(dir_path, "test_meta.yaml")
-        setup_cfg_filepath = os.path.join(dir_path, "test_setup.cfg")
+        project_metadata_filepath = os.path.join(dir_path, "test_setup.cfg")
 
         add_to_run_requirements = []
         add_to_test_requirements = ["graphviz !=2.47.2"]
@@ -27,7 +27,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
         cmeta = create_feedstock_meta_yaml(
             project,
             pypi_version,
-            setup_cfg_filepath=setup_cfg_filepath,
+            project_metadata_filepath=project_metadata_filepath,
             meta_yaml_filepath=meta_yaml_filepath,
             add_to_run_requirements=add_to_run_requirements,
             add_to_test_requirements=add_to_test_requirements,

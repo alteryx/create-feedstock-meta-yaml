@@ -25,7 +25,7 @@ jobs:
         with:
           project: "featuretools"
           pypi_version: "v1.11.1"
-          setup_cfg_filepath: "create_feedstock_meta_yaml/test_setup.cfg"
+          project_metadata_filepath: "create_feedstock_meta_yaml/test_setup.cfg"
           meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta_cfg.yaml"
           add_to_test_requirements: "graphviz !=2.47.2"
       - name: Create Feedstock meta from pyproject.toml
@@ -34,7 +34,7 @@ jobs:
         with:
           project: "featuretools"
           pypi_version: "v1.11.1"
-          setup_cfg_filepath: "create_feedstock_meta_yaml/test_pyproject.toml"
+          project_metadata_filepath: "create_feedstock_meta_yaml/test_pyproject.toml"
           meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta_toml.yaml"
           add_to_test_requirements: "graphviz !=2.47.2"
       - name: Print output cfg
