@@ -1,0 +1,52 @@
+name: Integration Test
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+jobs:
+  integration_test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.release.tag_name }}
+      - name: Create Feedstock meta from setup.cfg
+        id: create-feedstock-meta-cfg
+        uses: ./
+        with:
+          project: "featuretools"
+          pypi_version: "v1.11.1"
+          project_metadata_filepath: "create_feedstock_meta_yaml/test_setup.cfg"
+          meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta_cfg.yaml"
+          add_to_test_requirements: "graphviz !=2.47.2"
+      - name: Create Feedstock meta from pyproject.toml
+        id: create-feedstock-meta-toml
+        uses: ./
+        with:
+          project: "featuretools"
+          pypi_version: "v1.11.1"
+          project_metadata_filepath: "create_feedstock_meta_yaml/test_pyproject.toml"
+          meta_yaml_filepath: "create_feedstock_meta_yaml/test_meta_toml.yaml"
+          add_to_test_requirements: "graphviz !=2.47.2"
+      - name: Print output of cfg
+        run: cat create_feedstock_meta_yaml/test_meta_cfg.yaml
+      - name: Print output of toml
+        run: cat create_feedstock_meta_yaml/test_meta_toml.yaml
+      - name: Print expected output
+        run: cat create_feedstock_meta_yaml/expected_meta.yaml
+      - name: Verify output
+        run: |
+          if ! cmp --silent create_feedstock_meta_yaml/test_meta_cfg.yaml create_feedstock_meta_yaml/expected_meta.yaml ; then
+            echo "expected meta YAML for cfg does not match"
+            exit 1
+          elif ! cmp --silent create_feedstock_meta_yaml/test_meta_toml.yaml create_feedstock_meta_yaml/expected_meta.yaml ; then
+            echo "expected meta YAML for toml does not match"
+            exit 1
+          else
+            echo "Success: files are as expected"
+            exit 0
+          fi

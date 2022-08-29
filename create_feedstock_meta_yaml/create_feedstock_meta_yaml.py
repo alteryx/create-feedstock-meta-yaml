@@ -1,6 +1,7 @@
 import configparser
 
 import requests
+import tomli
 from conda_forge_tick.recipe_parser import CondaMetaYAML
 from packaging.requirements import Requirement
 
@@ -15,7 +16,7 @@ pypi_to_conda = {
 def create_feedstock_meta_yaml(
     project,
     pypi_version,
-    setup_cfg_filepath,
+    project_metadata_filepath,
     meta_yaml_filepath,
     add_to_run_requirements,
     add_to_test_requirements,
@@ -38,11 +39,30 @@ def create_feedstock_meta_yaml(
 
     meta_requires_python, pypi_sha256 = extract_pypi_info(project, pypi_version_no_v)
 
-    config = configparser.ConfigParser()
-    config.read(setup_cfg_filepath)
+    if project_metadata_filepath.endswith(
+        ".cfg",
+    ):
+        config = configparser.ConfigParser()
+        config.read(project_metadata_filepath)
 
-    run_requirements = clean_cfg_section(config["options"]["install_requires"])
-    test_requirements = clean_cfg_section(config["options.extras_require"]["test"])
+        run_requirements = clean_cfg_section(config["options"]["install_requires"])
+        test_requirements = clean_cfg_section(config["options.extras_require"]["test"])
+
+    elif project_metadata_filepath.endswith(
+        ".toml",
+    ):
+        toml_dict = None
+        with open(project_metadata_filepath, "rb") as f:
+            toml_dict = tomli.load(f)
+
+        run_requirements = clean_reqs(toml_dict["project"]["dependencies"])
+        test_requirements = clean_reqs(
+            toml_dict["project"]["optional-dependencies"]["test"],
+        )
+    else:
+        raise ValueError(
+            "Unsupported project metadata file type.",
+        )
 
     add_to_run_requirements = clean_list_length_one(add_to_run_requirements)
     add_to_test_requirements = clean_list_length_one(add_to_test_requirements)
@@ -100,19 +120,25 @@ def extract_pypi_info(project, pypi_version_no_v):
     return meta_requires_python, pypi_sha256
 
 
-def clean_cfg_section(section):
-    cleaned = []
-    section = section.split("\n")
-    for idx, req in enumerate(section):
+def clean_reqs(reqs):
+    new_reqs = []
+    for idx, req in enumerate(reqs):
         if len(req) > 1:
             package = Requirement(req)
             pypi_name = package.name
-            if len(package.extras) > 0:
-                pypi_name = package.name + "[" + package.extras.pop() + "]"
+            # import pdb;pdb.set_trace();
             if pypi_name in pypi_to_conda:
-                req = pypi_to_conda.pop(pypi_name) + " " + str(package.specifier)
-            req = req.replace(">= ", ">=")
-            cleaned.append(req)
+                pypi_name = pypi_to_conda.get(pypi_name) + str(package.specifier)
+            else:
+                pypi_name = package.name + str(package.specifier)
+            pypi_name = pypi_name.replace(">=", " >=")
+            new_reqs.append(pypi_name)
+    return new_reqs
+
+
+def clean_cfg_section(section):
+    section = section.split("\n")
+    cleaned = clean_reqs(section)
     return cleaned
 
 

@@ -1,0 +1,68 @@
+{% set version = "0.23.3" %}
+
+package:
+  name: featuretools
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/f/featuretools/featuretools-{{ version }}.tar.gz
+  sha256: e01aebb0eb87d06e457df69bc134a99494f9f3fa95f6effb164fba30efbb6cf5
+
+build:
+  entry_points:
+    - featuretools = featuretools.__main__:cli
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
+
+requirements:
+  host:
+    - pip
+    - python >=3.6.*
+  run:
+    - click >=7.0.0
+    - cloudpickle >=0.4.0
+    - dask >=2.12.0
+    - distributed >=2.12.0
+    - numpy >=1.13.3
+    - pandas >=0.24.1,<2.0.0
+    - psutil >=5.4.8
+    - python >=3.6.*
+    - pyyaml >=3.12
+    - scipy >=0.13.3
+    - tqdm >=4.32.0
+
+test:
+  commands:
+    - featuretools --help
+    - featuretools info
+    - featuretools list-primitives
+    - pytest --pyargs featuretools
+  imports:
+    - featuretools
+  requires:
+    - boto3 >=1.10.45
+    - composeml >=0.2.0
+    - fastparquet >=0.1.6
+    - moto >=1.3.13
+    - pip >=0.20.2
+    - pympler >=0.8
+    - pytest >=5.2.*
+    - python-graphviz >=0.8.4
+    - smart_open >=5.0.*
+  source_files:
+    - featuretools/*
+
+about:
+  doc_url: https://docs.featuretools.com
+  dev_url: https://github.com/Featuretools/featuretools/
+  home: https://featuretools.com
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  summary: a framework for automated feature engineering
+
+extra:
+  recipe-maintainers:
+    - gsheni
+    - rwedge

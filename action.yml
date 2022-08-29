@@ -5,7 +5,7 @@ inputs:
     required: true
   pypi_version:
     required: true
-  setup_cfg_filepath:
+  project_metadata_filepath:
     required: true
   meta_yaml_filepath:
     required: true
@@ -21,8 +21,8 @@ runs:
     - ${{ inputs.project }}
     - --pypi_version
     - ${{ inputs.pypi_version }}
-    - --setup_cfg_filepath
-    - ${{ inputs.setup_cfg_filepath }}
+    - --project_metadata_filepath
+    - ${{ inputs.project_metadata_filepath }}
     - --meta_yaml_filepath
     - ${{ inputs.meta_yaml_filepath }}
     - --add_to_run_requirements

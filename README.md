@@ -42,7 +42,7 @@ jobs:
         with:
           project: "featuretools"
           pypi_version: ${{ github.event.release.tag_name || github.event.inputs.pypi_version }}
-          setup_cfg_filepath: "setup.cfg"
+          project_metadata_filepath: "setup.cfg"
           meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
           add_to_run_requirements: ""
           add_to_test_requirements: "python-graphviz >=0.8.4"
