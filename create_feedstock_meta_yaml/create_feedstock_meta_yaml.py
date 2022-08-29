@@ -55,9 +55,10 @@ def create_feedstock_meta_yaml(
         with open(project_metadata_filepath, "rb") as f:
             toml_dict = tomli.load(f)
 
-        run_requirements = toml_dict["project"]["dependencies"]
-        test_requirements = toml_dict["project"]["optional-dependencies"]["test"]
-
+        run_requirements = clean_reqs(toml_dict["project"]["dependencies"])
+        test_requirements = clean_reqs(
+            toml_dict["project"]["optional-dependencies"]["test"],
+        )
     else:
         raise ValueError(
             "Unsupported project metadata file type.",
@@ -119,19 +120,25 @@ def extract_pypi_info(project, pypi_version_no_v):
     return meta_requires_python, pypi_sha256
 
 
-def clean_cfg_section(section):
-    cleaned = []
-    section = section.split("\n")
-    for idx, req in enumerate(section):
+def clean_reqs(reqs):
+    new_reqs = []
+    for idx, req in enumerate(reqs):
         if len(req) > 1:
             package = Requirement(req)
             pypi_name = package.name
-            if len(package.extras) > 0:
-                pypi_name = package.name + "[" + package.extras.pop() + "]"
+            # import pdb;pdb.set_trace();
             if pypi_name in pypi_to_conda:
-                req = pypi_to_conda.pop(pypi_name) + " " + str(package.specifier)
-            req = req.replace(">= ", ">=")
-            cleaned.append(req)
+                pypi_name = pypi_to_conda.get(pypi_name) + str(package.specifier)
+            else:
+                pypi_name = package.name + str(package.specifier)
+            pypi_name = pypi_name.replace(">=", " >=")
+            new_reqs.append(pypi_name)
+    return new_reqs
+
+
+def clean_cfg_section(section):
+    section = section.split("\n")
+    cleaned = clean_reqs(section)
     return cleaned
 
 

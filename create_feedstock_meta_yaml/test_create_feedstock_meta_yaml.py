@@ -10,6 +10,8 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
     project = "featuretools"
     pypi_version = "1.11.1"
     dir_path = os.path.dirname(os.path.realpath(__file__))
+    add_to_run_requirements = []
+    add_to_test_requirements = ["graphviz !=2.47.2"]
 
     def test_extract_pypi_info(self):
         meta_requires_py, pypi_sha256 = extract_pypi_info("featuretools", "v1.11.1")
@@ -23,16 +25,14 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
 
         project_metadata_filepath = os.path.join(self.dir_path, "test_setup.cfg")
         meta_yaml_filepath = os.path.join(self.dir_path, "test_meta_cfg.yaml")
-        add_to_run_requirements = []
-        add_to_test_requirements = ["graphviz !=2.47.2"]
 
         cmeta = create_feedstock_meta_yaml(
             self.project,
             self.pypi_version,
             project_metadata_filepath=project_metadata_filepath,
             meta_yaml_filepath=meta_yaml_filepath,
-            add_to_run_requirements=add_to_run_requirements,
-            add_to_test_requirements=add_to_test_requirements,
+            add_to_run_requirements=self.add_to_run_requirements,
+            add_to_test_requirements=self.add_to_test_requirements,
         )
         verify_cmeta(cmeta, self.pypi_version)
 
@@ -40,16 +40,14 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
 
         project_metadata_filepath = os.path.join(self.dir_path, "test_pyproject.toml")
         meta_yaml_filepath = os.path.join(self.dir_path, "test_meta_toml.yaml")
-        add_to_run_requirements = []
-        add_to_test_requirements = ["graphviz !=2.47.2"]
 
         cmeta = create_feedstock_meta_yaml(
             self.project,
             self.pypi_version,
             project_metadata_filepath=project_metadata_filepath,
             meta_yaml_filepath=meta_yaml_filepath,
-            add_to_run_requirements=add_to_run_requirements,
-            add_to_test_requirements=add_to_test_requirements,
+            add_to_run_requirements=self.add_to_run_requirements,
+            add_to_test_requirements=self.add_to_test_requirements,
         )
         verify_cmeta(cmeta, self.pypi_version)
 
