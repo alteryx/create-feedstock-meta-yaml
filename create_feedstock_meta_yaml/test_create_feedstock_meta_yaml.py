@@ -34,6 +34,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
             add_to_run_requirements=add_to_run_requirements,
             add_to_test_requirements=add_to_test_requirements,
         )
+        verify_cmeta(cmeta, self.pypi_version)
 
     def test_toml_input(self):
 
@@ -50,6 +51,7 @@ class TestCreateFeedstockMetaYAML(unittest.TestCase):
             add_to_run_requirements=add_to_run_requirements,
             add_to_test_requirements=add_to_test_requirements,
         )
+        verify_cmeta(cmeta, self.pypi_version)
 
 
 def verify_cmeta(cmeta, pypi_version):
