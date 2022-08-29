@@ -56,7 +56,7 @@ def create_feedstock_meta_yaml(
             toml_dict = tomli.load(f)
 
         run_requirements = toml_dict["project"]["dependencies"]
-        test_requirements = toml_dict["project.optional-dependencies"]["test"]
+        test_requirements = toml_dict["project"]["optional-dependencies"]["test"]
 
     else:
         raise ValueError(
