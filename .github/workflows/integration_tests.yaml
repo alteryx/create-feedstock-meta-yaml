@@ -5,11 +5,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      pypi_version:
-        description: 'released PyPI version'
-        required: true
 jobs:
   integration_test:
     name: Integration Test
