@@ -42,11 +42,11 @@ jobs:
         run: |
           if [ ! cmp --silent create_feedstock_meta_yaml/test_meta_cfg.yaml create_feedstock_meta_yaml/expected_meta.yaml ]; then
             echo "expected meta YAML for cfg does not match"
-            exit 0
+            exit 1
           elif [ ! cmp --silent create_feedstock_meta_yaml/test_meta_toml.yaml create_feedstock_meta_yaml/expected_meta.yaml ]; then
             echo "expected meta YAML for toml does not match"
-            exit 0
-          else
-            echo "ERROR: files are different"
             exit 1
+          else
+            echo "Success: files are as expected"
+            exit 0
           fi
