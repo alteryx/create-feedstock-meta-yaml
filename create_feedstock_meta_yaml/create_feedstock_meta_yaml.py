@@ -128,10 +128,9 @@ def clean_reqs(reqs):
             pypi_name = package.name
             # import pdb;pdb.set_trace();
             if pypi_name in pypi_to_conda:
-                pypi_name = pypi_to_conda.get(pypi_name) + str(package.specifier)
+                pypi_name = pypi_to_conda.get(pypi_name) + " " + str(package.specifier)
             else:
-                pypi_name = package.name + str(package.specifier)
-            pypi_name = pypi_name.replace(">=", " >=")
+                pypi_name = package.name + " " + str(package.specifier)
             new_reqs.append(pypi_name)
     return new_reqs
 
