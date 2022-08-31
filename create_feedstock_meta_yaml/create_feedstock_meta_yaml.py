@@ -126,13 +126,25 @@ def clean_reqs(reqs):
         if len(req) > 1:
             package = Requirement(req)
             pypi_name = package.name
-            # import pdb;pdb.set_trace();
             if pypi_name in pypi_to_conda:
-                pypi_name = pypi_to_conda.get(pypi_name) + " " + str(package.specifier)
+                pypi_name = create_pypi_name(
+                    pypi_to_conda.get(pypi_name),
+                    package.specifier,
+                )
             else:
-                pypi_name = package.name + " " + str(package.specifier)
+                pypi_name = create_pypi_name(package.name, package.specifier)
             new_reqs.append(pypi_name)
     return new_reqs
+
+
+def create_pypi_name(package_name, specifier):
+    pypi_name = package_name
+    for idx, x in enumerate(specifier):
+        if idx == 0:
+            pypi_name += " " + str(x)
+        else:
+            pypi_name += ", " + str(x)
+    return pypi_name
 
 
 def clean_cfg_section(section):
