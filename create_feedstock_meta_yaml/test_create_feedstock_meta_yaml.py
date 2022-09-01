@@ -60,7 +60,7 @@ def verify_cmeta(cmeta, pypi_version):
         "distributed >=2021.10.0",
         "holidays >=0.13",
         "numpy >=1.21.0",
-        "pandas >=1.3.0",
+        "pandas !=1.4.2, >=1.4.0",
         "psutil >=5.6.6",
         "python >=3.7.*",
         "scipy >=1.3.3",
