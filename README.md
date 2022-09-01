@@ -15,51 +15,61 @@ A GitHub Action to create a feedstock recipe/meta.yaml file (based on a PyPI ver
 ## Usage
 
 ```yaml
-name: Integration Test
+name: Create Feedstock PR
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
-      project:
-        description: 'release version to kickoff action'
-        required: true
-      pypi_version:
-        description: 'release version to kickoff action'
+      version:
+        description: 'released PyPI version to use (ex - v1.11.1)'
         required: true
 jobs:
-  integration_test:
-    name: Integration Test
+  create_feedstock_pr:
+    name: Create Feedstock PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout inputted version
+        uses: actions/checkout@v3
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.release.tag_name }}
-      - name: Create Feedstock meta
+          ref: ${{ github.event.inputs.version }}
+          path: "./featuretools"
+      - name: Pull latest from upstream for user forked feedstock
+        run: |
+          gh auth status
+          gh repo sync alteryx/featuretools-feedstock --branch main --source conda-forge/featuretools-feedstock --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_APPROVE_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          repository: alteryx/featuretools-feedstock
+          ref: main
+          path: "./featuretools-feedstock"
+          fetch-depth: '0'
+      - name: Run Create Feedstock meta YAML
         id: create-feedstock-meta
-        uses: ./
+        uses: alteryx/create-feedstock-meta-yaml@v4
         with:
           project: "featuretools"
-          pypi_version: ${{ github.event.release.tag_name || github.event.inputs.pypi_version }}
-          project_metadata_filepath: "setup.cfg"
-          meta_yaml_filepath: "featuretools-feedstock/meta.yaml"
-          add_to_run_requirements: ""
-          add_to_test_requirements: "python-graphviz >=0.8.4"
-      - name: Print output
-        run: cat example_meta.yaml
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: "${{ secrets.REPO_SCOPED_TOKEN }}"
-          path: "${{ github.action_repository  }}"
-          commit-message: Update meta yaml for feedstock
-          title: "${{ github.action_repository }} "  "${{ github.event.release.tag_name }} - Instant"
-          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          body: "This is an auto-generated PR with a new PyPI version."
-          branch: min-dep-update
-          branch-suffix: short-commit-hash
-          base: main
+          pypi_version: ${{ github.event.inputs.version }}
+          project_metadata_filepath: "featuretools/pyproject.toml"
+          meta_yaml_filepath: "featuretools-feedstock/recipe/meta.yaml"
+          add_to_test_requirements: "graphviz !=2.47.2"
+      - name: View updated meta yaml
+        run: cat featuretools-feedstock/recipe/meta.yaml
+      - name: Push updated yaml
+        run: |
+          cd featuretools-feedstock
+          git config --unset-all http.https://github.com/.extraheader
+          git config --global user.email "machineOSS@alteryx.com"
+          git config --global user.name "machineAYX Bot"
+          git remote set-url origin https://${{ secrets.AUTO_APPROVE_TOKEN }}@github.com/alteryx/featuretools-feedstock
+          git checkout -b ${{ github.event.inputs.version }}
+          git add recipe/meta.yaml
+          git commit -m "${{ github.event.inputs.version }}"
+          git push origin ${{ github.event.inputs.version }}
+      - name: Adding URL to job output
+        run: |
+          echo "Conda Feedstock Pull Request: https://github.com/alteryx/featuretools-feedstock/pull/new/${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
 ```
 
 To install this workflow, add the file above to the following location in your repository.
