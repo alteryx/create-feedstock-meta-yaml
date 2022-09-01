@@ -139,7 +139,9 @@ def clean_reqs(reqs):
 
 def create_pypi_name(package_name, specifier):
     pypi_name = package_name
-    for idx, x in enumerate(specifier):
+    specs = [str(x) for x in specifier]
+    specs.sort()
+    for idx, x in enumerate(specs):
         if idx == 0:
             pypi_name += " " + str(x)
         else:
