@@ -10,6 +10,9 @@ pypi_to_conda = {
     "moto[all]": "moto",
     "smart-open": "smart_open",
     "graphviz": "python-graphviz",
+    "kaleido": "python-kaleido",
+    "xgboost": "py-xgboost",
+    "matplotlib": "matplotlib-base",
 }
 
 
